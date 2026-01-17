@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ECECEC" />
+    <title>Message Ecryptor</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://kit.fontawesome.com/5b8fa639bb.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="./img/icon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="./img/favicon/site.webmanifest">
+</head>
+<body class="w-full bg-[#ECECEC] font-['Quicksand'] text-slate-800 text-sm md:text-base">
+    <div class="w-full flex items-start justify-start">
+        <!-- SIDEBAR -->
+        <div id="sidebar" class="fixed top-0 left-0 lg:relative w-full max-w-[400px] h-screen p-4 bg-[#ECECEC] border-r border-slate-400 
+            transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+            <!-- SIDEBAR HEADER -->
+            <header class="relative w-full h-20 flex items-center justify-between gap-4">
+                <a href="./index.html" class="inline-block text-2xl font-bold items-center gap-2 outline-none">
+                    <i class="fas fa-lock"></i>
+                    <span>Encrypt Message</span>
+                </a>
+
+                <button class="sidebar-btn w-fit aspect-square lg:hidden top-8 right-2 px-2 bg-slate-800 text-slate-200 rounded-sm">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </header>
+
+            <!-- SIDEBAR CONTENT -->
+            <div class="w-full max-h-[calc(100vh-120px)] overflow-y-auto">
+                <!-- V1 -->
+                <details class="w-full border-y border-slate-400">
+                    <summary class="w-full py-2 text-xl font-semibold cursor-pointer">
+                        Version 1
+                    </summary>
+
+                    <div class="w-full mt-2 p-3 bg-slate-800 text-slate-200 rounded-md text-sm space-y-3">
+                        <p>
+                            The shift depends <strong>only on the first letter of the word</strong>.
+                        </p>
+
+                        <pre class="bg-slate-900 p-2 rounded text-xs overflow-x-auto">
+<code>shift = charToNumber(word)</code>
+                        </pre>
+
+                        <p>
+                            Example:<br>
+                            <code>Halo</code> → shift is based on <code>H</code>
+                        </p>
+                    </div>
+                </details>
+
+                <!-- V2 -->
+                <details class="w-full border-y border-slate-400">
+                    <summary class="w-full py-2 text-xl font-semibold cursor-pointer">
+                        Version 2
+                    </summary>
+
+                    <div class="w-full mt-2 p-3 bg-slate-800 text-slate-200 rounded-md text-sm space-y-3">
+                        <p>
+                            The shift includes the <strong>word index</strong>.
+                            The same word can produce different results.
+                        </p>
+
+                        <pre class="bg-slate-900 p-2 rounded text-xs overflow-x-auto">
+<code>shift = charToNumber(word) + wordIndex</code>
+                        </pre>
+
+                        <p>
+                            Example:<br>
+                            <code>Halo world Halo</code><br>
+                            → the first <code>Halo</code> is different from the second one
+                        </p>
+                    </div>
+                </details>
+
+                <!-- V3 -->
+                <details class="w-full border-y border-slate-400">
+                    <summary class="w-full py-2 text-xl font-semibold cursor-pointer">
+                        Version 3
+                    </summary>
+
+                    <div class="w-full mt-2 p-3 bg-slate-800 text-slate-200 rounded-md text-sm space-y-3">
+                        <p>
+                            The shift includes both <strong>word index</strong> and
+                            <strong>character index</strong>.
+                            Each character has a different shift.
+                        </p>
+
+                        <pre class="bg-slate-900 p-2 rounded text-xs overflow-x-auto">
+<code>shift = charToNumber(word) + wordIndex + charIndex</code>
+                        </pre>
+
+                        <p>
+                            Example:<br>
+                            The first character and the second character of the same word
+                            use different shifts.
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="w-full max-w-[1200px] max-h-screen p-4 overflow-x-auto">
+            <!-- SELECT VERSION -->
+            <div class="w-full h-20 flex items-center justify-start gap-4">
+                <button data-version="v1" class="version-btn w-full md:w-[100px] py-2 bg-slate-800 text-slate-200 font-semibold border border-slate-800 rounded-md
+                    hover:bg-slate-600 hover:text-slate-200 focus:bg-slate-600 focus:text-slate-200 active:bg-slate-800 transition-colors duration-300 cursor-pointer">
+                    V1</button>
+                <button data-version="v2" class="version-btn w-full md:w-[100px] py-2 font-semibold border border-slate-800 rounded-md
+                    hover:bg-slate-600 hover:text-slate-200 focus:bg-slate-600 focus:text-slate-200 active:bg-slate-800 transition-colors duration-300 cursor-pointer">
+                    V2</button>
+                <button data-version="v3" class="version-btn w-full md:w-[100px] py-2 font-semibold border border-slate-800 rounded-md
+                    hover:bg-slate-600 hover:text-slate-200 focus:bg-slate-600 focus:text-slate-200 active:bg-slate-800 transition-colors duration-300 cursor-pointer">
+                    V3</button>
+            </div>
+
+            <!-- FORM -->
+            <div class="w-full max-w-[800px] p-4 bg-white rounded-lg shadow-md">
+                <form action="#">
+                    <!-- FORM -->
+                    <div class="w-full flex flex-col gap-4">
+                        <div class="w-full flex items-center justify-start gap-4">
+                            <button type="button" id="btn-encrypt" class="w-full py-2 bg-slate-800 text-slate-200 font-semibold border border-slate-800 rounded-md
+                                hover:bg-slate-600 hover:text-slate-200 focus:bg-slate-600 focus:text-slate-200 active:bg-slate-800 transition-colors duration-300 cursor-pointer">
+                                <i class="fa-solid fa-lock"></i>
+                                Encrypt</button>
+                            <button type="button" id="btn-decrypt" class="w-full py-2 font-semibold border border-slate-800 rounded-md
+                                hover:bg-slate-600 hover:text-slate-200 focus:bg-slate-600 focus:text-slate-200 active:bg-slate-800 transition-colors duration-300 cursor-pointer">
+                                <i class="fa-solid fa-lock-open"></i>
+                                Decrypt</button>
+                        </div>
+
+                        <select name="mode" id="mode" hidden>
+                            <option id="mode-encrypt" value="encrypt" selected>Encrypt</option>
+                            <option id="mode-decrypt" value="decrypt">Decrypt</option>
+                        </select>
+
+                        <div>
+                            <textarea name="message" id="message" rows="10" maxlength="500" placeholder="Enter your message here..."
+                                class="w-full p-4 border border-slate-400 rounded-md 
+                                focus:outline-none focus:ring-2 focus:ring-slate-400 resize-none transition-all duration-300"
+                            >Halo</textarea>
+
+                            <div class="w-full flex items-center justify-end text-slate-400">
+                                <p id="char-counter">0/500</p>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submit-button" class="w-full py-2 font-semibold border border-slate-800 rounded-md
+                            hover:bg-slate-600 hover:text-slate-200 focus:bg-slate-600 focus:text-slate-200 active:bg-slate-800 transition-colors duration-300 cursor-pointer">
+                            Submit</button>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- RESULT -->
+                    <div class="w-full">
+                        <div class="w-full mb-2 flex items-center justify-between">
+                            <span class="block mb-2 text-xl font-semibold">
+                                Result</span>
+                            <button type="button" id="copy-button" class="px-4 py-2 font-semibold border border-slate-800 rounded-md
+                                hover:bg-slate-600 hover:text-slate-200 focus:bg-slate-600 focus:text-slate-200 active:bg-slate-800 transition-colors duration-300 cursor-pointer">
+                                <i class="fa-regular fa-copy"></i>
+                                Copy</button>
+                        </div>
+                        <p id="result">
+                            hPitw
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <div class="w-full lg:hidden">
+                <button class="sidebar-btn w-full py-2 font-semibold border border-slate-800 rounded-md
+                    hover:bg-slate-600 hover:text-slate-200 focus:bg-slate-600 focus:text-slate-200 active:bg-slate-800 transition-colors duration-300 cursor-pointer mt-4">
+                    <i class="fa-solid fa-bars"></i>
+                    Content</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+    <script>
+    let currentVersion = 'v1';
+    let currentMode = 'encrypt';
+
+    const textarea = document.getElementById('message');
+    const resultEl = document.getElementById('result');
+    const submitBtn = document.getElementById('submit-button');
+
+    const versionButtons = document.querySelectorAll('.version-btn');
+    const encryptBtn = document.getElementById('btn-encrypt');
+    const decryptBtn = document.getElementById('btn-decrypt');
+    const copyBtn = document.getElementById('copy-button');
+
+    const counter = document.getElementById('char-counter');
+    const MAX_LENGTH = 500;
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarBtns = document.querySelectorAll('.sidebar-btn');
+
+    versionButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentVersion = btn.dataset.version;
+
+            versionButtons.forEach(b => b.classList.remove('bg-slate-800', 'text-slate-200'));
+            btn.classList.add('bg-slate-800', 'text-slate-200');
+        });
+    });
+
+    encryptBtn.addEventListener('click', () => {
+        currentMode = 'encrypt';
+        encryptBtn.classList.add('bg-slate-800', 'text-slate-200');
+        decryptBtn.classList.remove('bg-slate-800', 'text-slate-200');
+    });
+
+    decryptBtn.addEventListener('click', () => {
+        currentMode = 'decrypt';
+        decryptBtn.classList.add('bg-slate-800', 'text-slate-200');
+        encryptBtn.classList.remove('bg-slate-800', 'text-slate-200');
+    });
+
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const text = textarea.value.trim();
+        if (!text) {
+            resultEl.textContent = 'Please enter a message.';
+            return;
+        }
+
+        const output = currentMode === 'encrypt'
+            ? encrypt(text, currentVersion)
+            : decrypt(text, currentVersion);
+
+        resultEl.textContent = output;
+    });
+
+    copyBtn.addEventListener('click', async () => {
+        const text = resultEl.innerText.trim();
+
+        if (!text) {
+            alert('Tidak ada teks untuk disalin.');
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(text);
+
+            // Feedback UI sementara
+            const originalHTML = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            copyBtn.classList.add('bg-slate-800', 'text-slate-200');
+
+            setTimeout(() => {
+                copyBtn.innerHTML = originalHTML;
+                copyBtn.classList.remove('bg-slate-800', 'text-slate-200');
+            }, 1500);
+        } catch (err) {
+            alert('Gagal menyalin teks.');
+            console.error(err);
+        }
+    });
+
+    const updateCounter = () => {
+        let length = textarea.value.length;
+
+        if (length > MAX_LENGTH) {
+            textarea.value = textarea.value.slice(0, MAX_LENGTH);
+            length = MAX_LENGTH;
+        }
+
+        counter.textContent = `${length}/${MAX_LENGTH}`;
+
+        // Optional UX feedback
+        if (length === MAX_LENGTH) {
+            counter.classList.add('text-red-500');
+        } else {
+            counter.classList.remove('text-red-500');
+        }
+    };
+
+    updateCounter();
+
+    textarea.addEventListener('input', updateCounter);
+
+    sidebarBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+        });
+    });
+</script>
+</body>
